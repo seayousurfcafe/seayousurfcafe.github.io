@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://seayousurfcafe.github.io/sitemap.xml
