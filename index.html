@@ -329,7 +329,7 @@ body[data-look] .sec.fo{animation:flipo .2s ease-in forwards}body[data-look] .se
 .cupz.off{display:flex;animation:cupout .2s ease-in forwards}
 @keyframes cupin{from{transform:scale(.25);opacity:0}}
 @keyframes cupout{to{transform:scale(.25);opacity:0}}
-.cupz .zi{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%}.cupz svg{width:min(72%,280px);height:auto}
+.cupz .zi{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%}.cupz svg{width:min(72%,280px);height:auto;overflow:visible}
 .cupz h3{margin:0;font:700 22px/1.1 var(--f-item);text-align:center}
 .cupz .cp{font:700 16px/1 var(--f-item);opacity:.85}
 .cupz ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:5px;font:600 15px/1.2 var(--f-item)}
@@ -743,29 +743,29 @@ document.querySelectorAll(".langs button").forEach(b=>b.setAttribute("aria-press
   layout();spy();
 }
 
-const CUPL={esp:["#4a2516",T("Café","Espresso","Café","Espresso")],water:["#9fd3d8",T("Água quente","Hot water","Agua caliente","Heißes Wasser")],milk:["#f3e1c2",T("Leite","Milk","Leche","Milch")],foam:["#fffaf0",T("Espuma de leite","Milk foam","Espuma de leche","Milchschaum")],silk:["#ecd3ab",T("Leite cremoso","Silky milk","Leche cremosa","Cremige Milch")],choc:["#6b3a24",T("Chocolate","Chocolate","Chocolate","Schokolade")],matcha:["#8fb35a","Matcha"],gold:["#e7b33f",T("Leite com curcuma","Turmeric milk","Leche con cúrcuma","Kurkumamilch")],cocoa:["#7a4a2e",T("Cacau","Cocoa","Cacao","Kakao")],crema:["#c8894a",T("Crema","Crema","Crema","Crema")],amer:["#6e3f27",T("Café com água","Espresso & water","Café con agua","Espresso & Wasser")],meia:["#b98a62",T("Café com leite","Coffee & milk","Café con leche","Kaffee & Milch")],mfoam:["#fffaf0",T("Microespuma","Microfoam","Microespuma","Mikroschaum")],mlatte:["#b9d08c",T("Matcha com leite","Matcha & milk","Matcha con leche","Matcha & Milch")],tea:["#c4813f",T("Chá","Tea","Té","Tee")],ice:["#d9f1f4",T("Gelo","Ice","Hielo","Eis")]};
-const CUPS={cafe:["s",[["esp",.5],["crema",.12]]],descaf:["s",[["esp",.5],["crema",.12]]],duplo:["s",[["esp",.76],["crema",.12]]],baby:["s",[["milk",.2],["foam",.5],["cocoa",.15]]],
- abat:["m",[["amer",.55]]],meia:["m",[["meia",.88]]],capu:["m",[["esp",.15],["milk",.45],["foam",.3]]],flat:["m",[["esp",.3],["milk",.5],["mfoam",.1]]],
- gold:["m",[["gold",.85]]],matcha:["m",[["mlatte",.88]],0,T("Também com gelo","Also iced","También con hielo","Auch mit Eis")],choc:["m",[["choc",.85]]],cha:["m",[["tea",.85]]],
- galao:["m",[["esp",.22],["milk",.66]]],latte:["g",[["milk",.6],["esp",.15],["foam",.15]]],cold:["g",[["milk",.5],["esp",.3]],1]};
+const CUPL={esp:["#4a2516",T("Café","Espresso","Café","Espresso")],water:["#9fd3d8",T("Água quente","Hot water","Agua caliente","Heißes Wasser")],milk:["#f3e1c2",T("Leite","Milk","Leche","Milch")],foam:["#fffaf0",T("Espuma","Foam","Espuma","Schaum")],silk:["#ecd3ab",T("Leite cremoso","Silky milk","Leche cremosa","Cremige Milch")],choc:["#6b3a24",T("Chocolate","Chocolate","Chocolate","Schokolade")],matcha:["#8fb35a","Matcha"],gold:["#e7b33f",T("Curcuma e especiarias","Turmeric & spices","Cúrcuma y especias","Kurkuma & Gewürze")],dec:["#5a3020",T("Descafeinado","Decaf","Descafeinado","Entkoffeiniert")],cwater:["#b9dde2",T("Água fria","Cold water","Agua fría","Kaltes Wasser")],cocoa:["#7a4a2e",T("Cacau","Cocoa","Cacao","Kakao")],crema:["#c8894a",T("Crema","Crema","Crema","Crema")],amer:["#6e3f27",T("Café com água","Espresso & water","Café con agua","Espresso & Wasser")],meia:["#b98a62",T("Café com leite","Coffee & milk","Café con leche","Kaffee & Milch")],mfoam:["#fffaf0",T("Microespuma","Microfoam","Microespuma","Mikroschaum")],mlatte:["#b9d08c",T("Matcha com leite","Matcha & milk","Matcha con leche","Matcha & Milch")],tea:["#c4813f",T("Água com chá","Tea-infused water","Agua infusionada","Tee-Aufguss")],ice:["#d9f1f4",T("Gelo","Ice","Hielo","Eis")]};
+const CUPS={cafe:["s",[["esp",.6]]],descaf:["s",[["dec",.6]]],duplo:["s",[["esp",.88]]],baby:["s",[["milk",.16],["foam",.64],["cocoa",.08]]],
+ abat:["m",[["esp",.26],["water",.62]]],meia:["m",[["esp",.44],["milk",.44]]],capu:["m",[["esp",.15],["milk",.44],["foam",.29]]],flat:["m",[["esp",.29],["milk",.53],["mfoam",.06]]],
+ gold:["m",[["milk",.79],["gold",.09]]],matcha:["m",[["matcha",.12],["milk",.76]],0,T("Também com gelo","Also iced","También con hielo","Auch mit Eis")],choc:["m",[["choc",.13],["milk",.75]]],cha:["m",[["tea",.88]]],
+ galao:["g",[["esp",.22],["milk",.66]]],latte:["g",[["milk",.59],["esp",.15],["foam",.14]]],cold:["g",[["esp",.22],["cwater",.66]],1]};
 const VES={s:{body:"M33 70H77L71 101Q70.5 104 67 104H43Q39.5 104 39 101Z",inner:"M37.8 74H72.2L67.6 97Q67 100 64 100H46Q43 100 42.4 97Z",y0:74,y1:100,handle:"M76 77Q87 77 85 87Q83 95 71 94",cx:55},
  m:{body:"M19.8 49H90.2L80.6 98.6Q79.8 103.4 74.2 103.4H35.8Q30.2 103.4 29.4 98.6Z",inner:"M24.6 53H85.4L76.8 96Q76 99.4 72 99.4H38Q34 99.4 33.2 96Z",y0:53,y1:99.4,handle:"M88 60Q105 60 102 76Q99 89 81 87.5",cx:55},
  g:{body:"M38 46H80L77 105Q77 109 73 109H45Q41 109 41 105Z",inner:"M42 50H76L73.2 103Q73 105 71 105H47Q45 105 44.8 103Z",y0:50,y1:105,cx:59}};
 const VESN={s:T("Chávena de café","Espresso cup","Taza de café","Espressotasse"),m:T("Chávena grande","Large cup","Taza grande","Große Tasse"),g:T("Copo alto","Tall glass","Vaso alto","Hohes Glas")};
 let cupN=0;
-function cupSVG(k,big){const [v,L,ice]=CUPS[k],V=VES[v],id="cq"+(++cupN),H=V.y1-V.y0;let y=V.y1,r="";
- let tx="";const dark=c=>["esp","choc","cocoa","amer"].includes(c);
- L.forEach(([c,f])=>{const h=f*H;y-=h;r+=`<rect x="0" y="${(y-.3).toFixed(1)}" width="120" height="${(h+.6).toFixed(1)}" fill="${CUPL[c][0]}"/>`;
-  if(big&&f*H>=2.6){const t=tr(CUPL[c][1]).toUpperCase(),fs=Math.min(6.2,h*.62),W=(v==="g"?28:v==="s"?26:50),est=t.length*fs*.66;
-   tx+=`<text x="${V.cx}" y="${(y+h/2+fs*.36).toFixed(1)}" text-anchor="middle" font-size="${fs.toFixed(1)}" font-weight="800" letter-spacing=".3" fill="${dark(c)?"#fffaf0":"#3a2216"}"${est>W?` textLength="${W}" lengthAdjust="spacingAndGlyphs"`:""} style="font-family:var(--f-item)">${esc(t)}</text>`}});
+function cupSVG(k,fsU){const [v,L,ice]=CUPS[k],V=VES[v],id="cq"+(++cupN),H=V.y1-V.y0;let y=V.y1,r="",tx="";const dark=c=>["esp","choc","cocoa","amer","dec"].includes(c);
+ let hs=L.map(([c,f])=>f*H);
+ if(fsU){const mn=fsU*1.45;let need=0;hs=hs.map(h=>{if(h<mn){need+=mn-h;return mn}return h});const big=hs.indexOf(Math.max(...hs));hs[big]-=need}
+ L.forEach(([c],i)=>{const h=hs[i];y-=h;r+=`<rect x="0" y="${(y-.3).toFixed(2)}" width="120" height="${(h+.6).toFixed(2)}" fill="${CUPL[c][0]}"/>`;
+  if(fsU)tx+=`<text x="${V.cx}" y="${(y+h/2+fsU*.36).toFixed(2)}" text-anchor="middle" font-size="${fsU.toFixed(2)}" font-weight="800" fill="${dark(c)?"#fffaf0":"#3a2216"}" style="font-family:var(--f-item);letter-spacing:.04em">${esc(tr(CUPL[c][1]).toUpperCase())}</text>`});
  if(ice)[[47,y+4,-12],[60,y+10,9],[52,y+22,20]].forEach(([x,yy,a])=>{r+=`<rect x="${x}" y="${yy.toFixed(1)}" width="13" height="13" rx="3" fill="#fff" opacity=".55" transform="rotate(${a} ${x+6.5} ${(yy+6.5).toFixed(1)})"/>`});
  const glass=v==="g";
- return `<svg viewBox="${big?{s:"24 64 72 44",m:"12 43 98 64",g:"28 40 62 74"}[v]:"0 0 120 116"}" aria-hidden="true"><defs><clipPath id="${id}"><path d="${V.inner}"/></clipPath></defs>`+
-  
+ return `<svg viewBox="${fsU?CUPVB[v].join(" "):"0 0 120 116"}" aria-hidden="true"><defs><clipPath id="${id}"><path d="${V.inner}"/></clipPath></defs>`+
   (V.handle?`<path d="${V.handle}" fill="none" stroke="#fffaf0" stroke-width="4.5" stroke-linecap="round"/>`:"")+
   `<path d="${V.body}" fill="${glass?"rgba(255,255,255,.38)":"#fffaf0"}"/>`+
   `<g clip-path="url(#${id})">${glass?"":`<path d="${V.inner}" fill="#f6eddd"/>`}${r}</g>`+
   (glass?`<path d="M46.5 55L48.5 99" stroke="#fff" stroke-opacity=".5" stroke-width="3" stroke-linecap="round"/>`:"")+`<g clip-path="url(#${id})">${tx}</g></svg>`}
+const CUPVB={s:[24,64,72,44],m:[12,43,98,64],g:[28,40,62,74]};
 const cupIco=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h12v5a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5z" fill="currentColor"/><path d="M15.5 10.5h1.5a2.5 2.5 0 0 1 0 5h-1.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 3.5c-.8 1 .8 1.8 0 3M12 3.5c-.8 1 .8 1.8 0 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`;
 const listIco=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M5 12h14M5 17h9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>`;
 const flipBtn=b=>`<button type="button" class="flipb">${b?listIco:cupIco}${esc(tr(b?T("Ver lista","See the list","Ver lista","Liste"):T("Ver chávenas","See the cups","Ver tazas","Tassen ansehen")))}</button>`;
@@ -775,7 +775,7 @@ function cupsBack(s){const its=s.items.filter(i=>i.k&&CUPS[i.k]).sort((a,b)=>"sm
 function openCup(btn){const f=btn.closest(".face"),z=f.querySelector(".cupz"),k=btn.dataset.k,s=MENUS.drinks.find(x=>x.id==="cafes"),it=s.items.find(i=>i.k===k),[v,L,ice,opt]=CUPS[k];
  const fr=f.getBoundingClientRect(),br=btn.getBoundingClientRect();z.style.transformOrigin=`${br.left+br.width/2-fr.left}px ${br.top+br.height/2-fr.top}px`;
  const ls=[...L].reverse().map(([c])=>c);if(ice)ls.push("ice");
- z.innerHTML=`<div class="zi">`+cupSVG(k,1)+`<h3>${esc(tr(it.n))}</h3>${it.p?`<span class="cp">${eur(it.p)}</span>`:""}<span class="sz">${esc(tr(VESN[v]))}${opt?" · "+esc(tr(opt)):""}</span></div>`;
+ const zw=Math.min((f.clientWidth-4)*.72,280),fsU=11*CUPVB[v][2]/zw;z.innerHTML=`<div class="zi">`+cupSVG(k,fsU)+`<h3>${esc(tr(it.n))}</h3>${it.p?`<span class="cp">${eur(it.p)}</span>`:""}<span class="sz">${esc(tr(VESN[v]))}${opt?" · "+esc(tr(opt)):""}</span></div>`;
  z.style.paddingTop="0px";z.className="cupz on";const zi=z.firstChild,zh=zi.offsetHeight,fh=z.clientHeight,cy=br.top+br.height/2-fr.top+6;z.style.paddingTop=Math.max(8,Math.min(fh-zh-8,cy-zh/2))+"px"}
 function closeCup(z){if(matchMedia("(prefers-reduced-motion: reduce)").matches){z.className="cupz";return}z.className="cupz off";z.addEventListener("animationend",()=>{if(z.classList.contains("off"))z.className="cupz"},{once:true})}
 document.getElementById("menu").addEventListener("click",e=>{
