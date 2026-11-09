@@ -737,7 +737,7 @@ document.querySelectorAll(".langs button").forEach(b=>b.setAttribute("aria-press
       <ul class="items">${items}</ul>${s.x?`<p class="sec-x">${esc(tr(s.x)).replace(/ €/g,"\u00a0€")}</p>`:""}${s.id==="cafes"?"</div>"+cupsBack(s)+"</div>":""}
     </div></section>`;
   }).join("");
-  layout();spy();
+  layout();spy();cupThumbs();
 }
 
 const CUPL={esp:["#4a2516",T("Café","Coffee","Café","Kaffee")],water:["#9fd3d8",T("Água quente","Hot water","Agua caliente","Heißes Wasser")],milk:["#f3e1c2",T("Leite","Milk","Leche","Milch")],foam:["#fffaf0",T("Espuma","Foam","Espuma","Schaum")],silk:["#ecd3ab",T("Leite cremoso","Silky milk","Leche cremosa","Cremige Milch")],choc:["#6b3a24",T("Chocolate","Chocolate","Chocolate","Schokolade")],matcha:["#8fb35a","Matcha"],gold:["#e7b33f",T("Curcuma\ne especiarias","Turmeric\n& spices","Cúrcuma\ny especias","Kurkuma\n& Gewürze")],dec:["#5a3020",T("Café\ndecaf","Decaf\ncoffee","Café\ndecaf","Entkoff.\nKaffee")],cwater:["#b9dde2",T("Água","Water","Agua","Wasser")],cocoa:["#7a4a2e",T("Cacau","Cocoa","Cacao","Kakao")],crema:["#c8894a",T("Crema","Crema","Crema","Crema")],amer:["#6e3f27",T("Café com água","Espresso & water","Café con agua","Espresso & Wasser")],meia:["#b98a62",T("Café com leite","Coffee & milk","Café con leche","Kaffee & Milch")],mfoam:["#fffaf0",T("Espuma","Foam","Espuma","Schaum")],mlatte:["#b9d08c",T("Matcha com leite","Matcha & milk","Matcha con leche","Matcha & Milch")],tea:["#c4813f",T("Água\ncom chá","Tea-infused\nwater","Agua\ninfusionada","Tee-\nAufguss")],ice:["#d9f1f4",T("Gelo","Ice","Hielo","Eis")]};
@@ -750,10 +750,12 @@ const VES={s:{body:"M33 70H77L71 101Q70.5 104 67 104H43Q39.5 104 39 101Z",inner:
  g:{body:"M38 46H80L77 105Q77 109 73 109H45Q41 109 41 105Z",inner:"M42 50H76L73.2 103Q73 105 71 105H47Q45 105 44.8 103Z",y0:50,y1:105,cx:59}};
 const VESN={s:T("Chávena de café","Espresso cup","Taza de café","Espressotasse"),m:T("Chávena grande","Large cup","Taza grande","Große Tasse"),g:T("Copo alto","Tall glass","Vaso alto","Hohes Glas")};
 let cupN=0;
-function cupSVG(k,fsU){const [v,L,ice]=CUPS[k],V=VES[v],id="cq"+(++cupN),H=V.y1-V.y0;let y=V.y1,r="",tx="";const dark=c=>["esp","choc","cocoa","amer","dec"].includes(c);
+function cupFS(ul,k){const vb=CUPVB[CUPS[k][0]],lw=2*(ul.clientWidth-4)/3+2,zw=Math.min(lw*.98,178*vb[2]/vb[3],320);return lw>20?13*vb[2]/zw:0}
+function cupThumbs(){document.querySelectorAll(".cups").forEach(ul=>ul.querySelectorAll("li:not(.on) button").forEach(b=>{b.firstChild.outerHTML=cupSVG(b.dataset.k,0,cupFS(ul,b.dataset.k))}))}
+function cupSVG(k,fsU,fsL){fsL=fsU||fsL;const [v,L,ice]=CUPS[k],V=VES[v],id="cq"+(++cupN),H=V.y1-V.y0;let y=V.y1,r="",tx="";const dark=c=>["esp","choc","cocoa","amer","dec"].includes(c);
  let hs=L.map(([c,f])=>f*H);
  const lab=c=>tr(CUPL[c][1]).toUpperCase().split("\n");
- if(fsU){let need=0;hs=hs.map((h,i)=>{const mn=fsU*(1.45+1.02*(lab(L[i][0]).length-1));if(h<mn){need+=mn-h;return mn}return h});const big=hs.indexOf(Math.max(...hs));hs[big]-=need}
+ if(fsL){let need=0;hs=hs.map((h,i)=>{const mn=fsL*(1.45+1.02*(lab(L[i][0]).length-1));if(h<mn){need+=mn-h;return mn}return h});const big=hs.indexOf(Math.max(...hs));hs[big]-=need}
  L.forEach(([c],i)=>{const h=hs[i];y-=h;r+=`<rect x="0" y="${(y-.3).toFixed(2)}" width="120" height="${(h+.6).toFixed(2)}" fill="${CUPL[c][0]}"/>`;
   if(fsU){const ln=lab(c),y0=y+h/2+fsU*.36-(ln.length-1)*fsU*.51;tx+=`<text text-anchor="middle" font-size="${fsU.toFixed(2)}" font-weight="800" fill="${dark(c)?"#fffaf0":"#3a2216"}" style="font-family:var(--f-item);letter-spacing:.01em">${ln.map((t,j)=>`<tspan x="${V.cx}" y="${(y0+j*fsU*1.02).toFixed(2)}">${esc(t)}</tspan>`).join("")}</text>`}});
  if(ice)(ice===2?[[44.5,V.y1-30,-12],[61,V.y1-14,9],[45.5,V.y1-13,20]]:[[47,y+4,-12],[60,y+10,9],[52,y+22,20]]).forEach(([x,yy,a])=>{r+=`<rect x="${x}" y="${yy.toFixed(1)}" width="13" height="13" rx="3" fill="#fff" opacity=".55" transform="rotate(${a} ${x+6.5} ${(yy+6.5).toFixed(1)})"/>`});
@@ -775,16 +777,16 @@ function cupPick(btn){cupDo(btn)}
 function cupDo(btn){const ul=btn.closest(".cups"),li=btn.parentNode,lis=[...ul.children],was=li.classList.contains("on"),rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
  const r0=new Map(lis.map(x=>[x,x.getBoundingClientRect()])),prev=ul.querySelector("li.on"),ps=prev&&prev.querySelector("svg"),pr=ps&&ps.getBoundingClientRect();
  lis.forEach(x=>{x.style.gridRow=x.style.gridColumn="";if(x.classList.contains("on")){x.classList.remove("on");const b=x.firstChild,k=b.dataset.k;b.lastChild.style.transform="";b.style.top="";b.style.position="";
-  if(rm){b.firstChild.outerHTML=cupSVG(k);return}
+  if(rm){b.firstChild.outerHTML=cupSVG(k,0,cupFS(ul,k));return}
   const sv=b.firstChild,vb=CUPVB[CUPS[k][0]],u=Math.min(b.clientWidth,136)/108;Object.assign(sv.style,{width:vb[2]*u+"px",maxWidth:"none",marginTop:(vb[1]-34)*u+"px",marginBottom:(110-vb[1]-vb[3])*u+"px",transform:`translateX(${(vb[0]+vb[2]/2-60)*u}px)`});
-  sv.querySelectorAll("text").forEach(t=>t.animate([{opacity:1},{opacity:0}],{duration:260,easing:"ease-out",fill:"forwards"}));
-  setTimeout(()=>{if(!x.classList.contains("on")&&b.firstChild===sv)sv.outerHTML=cupSVG(k)},400)}});
+  sv.querySelectorAll("text").forEach(t=>t.animate([{opacity:1},{opacity:0}],{duration:150,easing:"ease-out",fill:"forwards"}));
+  setTimeout(()=>{if(!x.classList.contains("on")&&b.firstChild===sv)sv.outerHTML=cupSVG(k,0,cupFS(ul,k))},400)}});
  if(!was){const n=lis.indexOf(li),r=Math.floor(n/3),c=n%3,c0=c===0?0:1,up=r>0&&r===Math.floor((lis.length-1)/3),ra=up?r-1:r,inA=(rr,cc)=>(rr===ra||rr===ra+1)&&(cc===c0||cc===c0+1);const dis=lis.map((x,i)=>[x,Math.floor(i/3),i%3]).filter(([x,rr,cc])=>x!==li&&inA(rr,cc)),dc=new Map(),used=new Set();dis.forEach(([x,rr,cc])=>{if(rr===r){dc.set(x,cc);used.add(cc)}});let fc=0;dis.forEach(([x])=>{if(!dc.has(x)){while(used.has(fc))fc++;dc.set(x,fc);used.add(fc)}});
   lis.forEach((x,i)=>{const rr=Math.floor(i/3),cc=i%3;let R,C;
    if(x===li){x.style.gridRow=`${up?ra+2:r+1}/span 2`;x.style.gridColumn=`${c0+1}/span 2`;return}
    if(up){if(rr<ra){R=rr;C=cc}else if(inA(rr,cc)){R=ra;C=dc.get(x)}else{R=rr+1;C=cc}}else if(rr<r||(rr<=r+1&&!inA(rr,cc))){R=rr;C=cc}else if(inA(rr,cc)){R=r+2;C=dc.get(x)}else{R=rr+1;C=cc}
    x.style.gridRow=String(R+1);x.style.gridColumn=String(C+1)});
-  li.classList.add("on");const k=btn.dataset.k,v=CUPS[k][0],vb=CUPVB[v],zw=Math.min(li.clientWidth*.98,178*vb[2]/vb[3],320);btn.firstChild.outerHTML=cupSVG(k,13*vb[2]/zw);btn.firstChild.style.width=zw+"px";btn.lastChild.style.transform=`translateX(${((V0=>V0[0]+V0[2]/2)(vb)-VES[v].cx)*-zw/vb[2]}px)`;
+  li.classList.add("on");const k=btn.dataset.k,v=CUPS[k][0],vb=CUPVB[v],fs=cupFS(ul,k),zw=13*vb[2]/fs;btn.firstChild.outerHTML=cupSVG(k,fs);btn.firstChild.style.width=zw+"px";btn.lastChild.style.transform=`translateX(${((V0=>V0[0]+V0[2]/2)(vb)-VES[v].cx)*-zw/vb[2]}px)`;
   btn.style.position="relative";btn.style.top="0px";const lr=li.getBoundingClientRect(),bt=e=>e.querySelector('svg>path:not([fill="none"])').getBoundingClientRect().top,ct=bt(btn),cb=btn.lastChild.getBoundingClientRect().bottom;
   const side=lis.filter(x=>{if(x===li)return 0;const r=x.getBoundingClientRect();return r.top<lr.bottom-2&&r.bottom>lr.top+2});
   const tp=side.length?Math.min(...side.map(x=>bt(x.firstChild))):lr.top,bot=side.length?Math.max(...side.map(x=>x.firstChild.lastChild.getBoundingClientRect().bottom)):lr.bottom;btn.style.top=((tp+bot)-(ct+cb))/2+"px"}
@@ -818,7 +820,7 @@ function layout(){
     if(k<0){k=nx;for(let j=0;j<BANDS.length&&bad.has(k);j++)k=(k+1)%BANDS.length}x.k=k;nx=(k+1)%BANDS.length;
     x.s.style.setProperty("--band",BANDS[k][0]);x.s.style.setProperty("--on",BANDS[k][1]);x.s.dataset.b=k});
 }
-DESK.addEventListener("change",()=>render());
+DESK.addEventListener("change",()=>render());addEventListener("resize",()=>{clearTimeout(window._ct);window._ct=setTimeout(cupThumbs,200)});
 let obs;
 let lock=0;
 function markChip(id){document.querySelectorAll(".chips").forEach(c=>{c.querySelectorAll("a").forEach(a=>a.classList.toggle("on",a.dataset.id===id));const on=c.querySelector("a.on");if(on&&c.scrollWidth>c.clientWidth)c.scrollTo({left:on.offsetLeft-16})})}
