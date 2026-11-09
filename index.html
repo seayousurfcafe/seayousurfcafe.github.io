@@ -284,7 +284,7 @@ body[data-look="poster"] .board .where{position:absolute;left:0;right:0;top:102p
 .glit{position:absolute;pointer-events:none;z-index:5;font-size:var(--s);line-height:1;color:var(--c);text-shadow:0 0 4px rgba(255,255,255,.6)}
 @keyframes glit{0%{transform:translate(-50%,-50%) scale(0) rotate(0)}10%{transform:translate(-50%,-50%) scale(1.2) rotate(40deg);opacity:1}25%{transform:translate(-50%,-50%) scale(.8) rotate(60deg);opacity:.7}40%{transform:translate(-50%,-50%) scale(1.1) rotate(80deg);opacity:1}55%{transform:translate(-50%,-50%) scale(.85) rotate(95deg);opacity:.75}70%{transform:translate(-50%,calc(-50% - 4px)) scale(1) rotate(105deg);opacity:1}100%{transform:translate(-50%,calc(-50% - 18px)) scale(.4) rotate(120deg);opacity:0}}
 
-.mascot{transition:opacity .3s,visibility .3s}.mascot.hid{opacity:0;visibility:hidden}
+.mascot{transition:opacity .3s,visibility .3s}.mascot:not(.ready){opacity:0}.mascot.hid{opacity:0;visibility:hidden}
 @media (min-width:900px){.mascot .cup{position:relative;z-index:2}.mascot .bubble{margin-bottom:-14px}}
 @media (prefers-reduced-motion:no-preference){
   .mascot .cup{transform-origin:50% 100%;animation:bob .45s ease-in-out infinite alternate}
@@ -885,5 +885,5 @@ addEventListener("scroll",fit,{passive:true});addEventListener("resize",fit);fit
   const sr=st.getBoundingClientRect(),lr=li.getBoundingClientRect(),cx=sr.left-lr.left+sr.width/2,cy=sr.top-lr.top+sr.height/2,C=["#ffd23f","#fff","#ffe98a","#f1cd7e","#ffb800"],G=["✦","★","✦","•","✧"];for(let i=0;i<46;i++){const g=document.createElement("span");g.className="glit";g.textContent=G[i%5];g.style.left=cx+"px";g.style.top=cy+"px";g.style.setProperty("--s",(10+Math.random()*14)+"px");g.style.setProperty("--c",C[i%5]);li.appendChild(g);const a=Math.random()*Math.PI*2,d=40+Math.random()*120,dx=Math.cos(a)*d,dy=Math.sin(a)*d*.75,rot=(Math.random()-.5)*540,dur=1300+Math.random()*1100;const T=(x,y,sc,r)=>"translate(calc(-50% + "+x+"px),calc(-50% + "+y+"px)) scale("+sc+") rotate("+r+"deg)";const an=g.animate([{transform:T(0,0,0,0),opacity:1},{transform:T(dx,dy,1.15,rot*.5),opacity:1,offset:.3},{transform:T(dx*.95,dy,.75,rot*.7),opacity:.55,offset:.5},{transform:T(dx*1.05,dy+6,1,rot*.85),opacity:1,offset:.68},{transform:T(dx*1.1,dy+34,.4,rot),opacity:0}],{duration:dur,easing:"cubic-bezier(.12,.8,.3,1)",fill:"forwards"});an.onfinish=()=>g.remove()}});
 })();
 </script>
-<script>(()=>{const t=document.querySelector(".top"),b=document.querySelector(".bar");if(!t||!b)return;const f=()=>b.style.setProperty("--ty",-t.offsetHeight+"px");f();addEventListener("resize",f);addEventListener("load",f)})()</script></body>
+<script>(()=>{const t=document.querySelector(".top"),b=document.querySelector(".bar");if(!t||!b)return;const f=()=>b.style.setProperty("--ty",-t.offsetHeight+"px");f();addEventListener("resize",f);addEventListener("load",f)})()</script><script>(()=>{const m=document.getElementById("mascot"),i=m&&m.querySelector(".cup");if(!i)return;const r=()=>m.classList.add("ready");if(i.complete)r();else{i.addEventListener("load",r);i.addEventListener("error",r);setTimeout(r,4000)}})()</script></body>
 </html>
