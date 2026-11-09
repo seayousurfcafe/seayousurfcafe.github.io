@@ -743,24 +743,24 @@ document.querySelectorAll(".langs button").forEach(b=>b.setAttribute("aria-press
   layout();spy();
 }
 
-const CUPL={esp:["#4a2516",T("Café","Espresso","Café","Espresso")],water:["#9fd3d8",T("Água quente","Hot water","Agua caliente","Heißes Wasser")],milk:["#f3e1c2",T("Leite","Milk","Leche","Milch")],foam:["#fffaf0",T("Espuma de leite","Milk foam","Espuma de leche","Milchschaum")],silk:["#ecd3ab",T("Leite cremoso","Silky milk","Leche cremosa","Cremige Milch")],choc:["#6b3a24",T("Chocolate","Chocolate","Chocolate","Schokolade")],matcha:["#8fb35a","Matcha"],gold:["#e7b33f",T("Leite dourado","Golden milk","Leche dorada","Goldene Milch")],tea:["#c4813f",T("Chá","Tea","Té","Tee")],ice:["#d9f1f4",T("Gelo","Ice","Hielo","Eis")]};
-const CUPS={cafe:["s",[["esp",.6]]],descaf:["s",[["esp",.6]]],duplo:["s",[["esp",.88]]],baby:["s",[["milk",.45],["foam",.35]]],
+const CUPL={esp:["#4a2516",T("Café","Espresso","Café","Espresso")],water:["#9fd3d8",T("Água quente","Hot water","Agua caliente","Heißes Wasser")],milk:["#f3e1c2",T("Leite","Milk","Leche","Milch")],foam:["#fffaf0",T("Espuma de leite","Milk foam","Espuma de leche","Milchschaum")],silk:["#ecd3ab",T("Leite cremoso","Silky milk","Leche cremosa","Cremige Milch")],choc:["#6b3a24",T("Chocolate","Chocolate","Chocolate","Schokolade")],matcha:["#8fb35a","Matcha"],gold:["#e7b33f",T("Leite com curcuma","Turmeric milk","Leche con cúrcuma","Kurkumamilch")],cocoa:["#7a4a2e",T("Cacau","Cocoa","Cacao","Kakao")],tea:["#c4813f",T("Chá","Tea","Té","Tee")],ice:["#d9f1f4",T("Gelo","Ice","Hielo","Eis")]};
+const CUPS={cafe:["s",[["esp",.6]]],descaf:["s",[["esp",.6]]],duplo:["s",[["esp",.88]]],baby:["s",[["milk",.38],["foam",.3],["cocoa",.22]]],
  abat:["m",[["esp",.3],["water",.55]]],meia:["m",[["esp",.42],["milk",.45]]],capu:["m",[["esp",.3],["milk",.3],["foam",.3]]],flat:["m",[["esp",.35],["silk",.5]]],
- gold:["m",[["gold",.85]]],matcha:["m",[["matcha",.35],["milk",.5]]],choc:["m",[["choc",.85]]],cha:["m",[["tea",.85]]],
- galao:["g",[["esp",.2],["milk",.6],["foam",.12]]],latte:["g",[["milk",.5],["esp",.18],["foam",.2]]],cold:["g",[["milk",.5],["esp",.3]],1]};
+ gold:["m",[["gold",.85]]],matcha:["m",[["matcha",.35],["milk",.5]],0,T("Também com gelo","Also iced","También con hielo","Auch mit Eis")],choc:["m",[["choc",.85]]],cha:["m",[["tea",.85]]],
+ galao:["m",[["esp",.22],["milk",.55],["foam",.13]]],latte:["g",[["milk",.5],["esp",.18],["foam",.2]]],cold:["g",[["milk",.5],["esp",.3]],1]};
 const VES={s:{body:"M34 74H76V84Q76 103 55 103Q34 103 34 84Z",inner:"M37 77H73V84Q73 100 55 100Q37 100 37 84Z",y0:77,y1:100,handle:"M75 79Q86 79 85 87Q84 94 74 93",cx:55},
  m:{body:"M22 44H88V70Q88 105 55 105Q22 105 22 70Z",inner:"M26 48H84V70Q84 101 55 101Q26 101 26 70Z",y0:48,y1:101,handle:"M87 53Q103 53 102 66Q101 80 85 81",cx:55},
  g:{body:"M37 30H81L77 104Q77 109 72 109H46Q41 109 41 104Z",inner:"M40.5 33H77.5L74 102Q74 106 70.5 106H47.5Q44 106 44 102Z",y0:33,y1:106,cx:59}};
 const VESN={s:T("Chávena de café","Espresso cup","Taza de café","Espressotasse"),m:T("Chávena grande","Large cup","Taza grande","Große Tasse"),g:T("Copo alto","Tall glass","Vaso alto","Hohes Glas")};
 let cupN=0;
 function cupSVG(k,big){const [v,L,ice]=CUPS[k],V=VES[v],id="cq"+(++cupN),H=V.y1-V.y0;let y=V.y1,r="";
- let tx="";const dark=c=>["esp","choc"].includes(c);
+ let tx="";const dark=c=>["esp","choc","cocoa"].includes(c);
  L.forEach(([c,f])=>{const h=f*H;y-=h;r+=`<rect x="0" y="${(y-.3).toFixed(1)}" width="120" height="${(h+.6).toFixed(1)}" fill="${CUPL[c][0]}"/>`;
   if(big){const t=tr(CUPL[c][1]).toUpperCase(),fs=Math.min(6.2,h*.62),W=(v==="g"?30:v==="s"?30:50),est=t.length*fs*.66;
    tx+=`<text x="${V.cx}" y="${(y+h/2+fs*.36).toFixed(1)}" text-anchor="middle" font-size="${fs.toFixed(1)}" font-weight="800" letter-spacing=".3" fill="${dark(c)?"#fffaf0":"#3a2216"}"${est>W?` textLength="${W}" lengthAdjust="spacingAndGlyphs"`:""} style="font-family:var(--f-item)">${esc(t)}</text>`}});
  if(ice)[[47,y+4,-12],[60,y+10,9],[52,y+22,20]].forEach(([x,yy,a])=>{r+=`<rect x="${x}" y="${yy.toFixed(1)}" width="13" height="13" rx="3" fill="#fff" opacity=".55" transform="rotate(${a} ${x+6.5} ${(yy+6.5).toFixed(1)})"/>`});
  const glass=v==="g";
- return `<svg viewBox="0 0 120 116" aria-hidden="true"><defs><clipPath id="${id}"><path d="${V.inner}"/></clipPath></defs>`+
+ return `<svg viewBox="${big?{s:"18 62 80 46",m:"10 38 100 72",g:"26 26 68 86"}[v]:"0 0 120 116"}" aria-hidden="true"><defs><clipPath id="${id}"><path d="${V.inner}"/></clipPath></defs>`+
   
   (V.handle?`<path d="${V.handle}" fill="none" stroke="#fffaf0" stroke-width="6" stroke-linecap="round"/>`:"")+
   `<path d="${V.body}" fill="${glass?"rgba(255,255,255,.38)":"#fffaf0"}"/>`+
@@ -772,10 +772,10 @@ const flipBtn=b=>`<button type="button" class="flipb">${b?listIco:cupIco}${esc(t
 function cupsBack(s){const its=s.items.filter(i=>i.k&&CUPS[i.k]).sort((a,b)=>"smg".indexOf(CUPS[a.k][0])-"smg".indexOf(CUPS[b.k][0]));
  return `<div class="face b"><div class="sec-head"><h2>${esc(tr(s.t))}</h2>${flipBtn(1)}</div><p class="sec-note">${esc(tr(T("Toca numa chávena para ver o que leva","Tap a cup to see what's inside","Toca una taza para ver qué lleva","Tippe auf eine Tasse")))}</p>
  <ul class="cups">${its.map(i=>`<li><button type="button" data-k="${i.k}">${cupSVG(i.k)}<span>${esc(tr(i.n))}</span></button></li>`).join("")}</ul><div class="cupz" role="dialog" aria-modal="false"></div></div>`}
-function openCup(btn){const f=btn.closest(".face"),z=f.querySelector(".cupz"),k=btn.dataset.k,s=MENUS.drinks.find(x=>x.id==="cafes"),it=s.items.find(i=>i.k===k),[v,L,ice]=CUPS[k];
+function openCup(btn){const f=btn.closest(".face"),z=f.querySelector(".cupz"),k=btn.dataset.k,s=MENUS.drinks.find(x=>x.id==="cafes"),it=s.items.find(i=>i.k===k),[v,L,ice,opt]=CUPS[k];
  const fr=f.getBoundingClientRect(),br=btn.getBoundingClientRect();z.style.transformOrigin=`${br.left+br.width/2-fr.left}px ${br.top+br.height/2-fr.top}px`;
  const ls=[...L].reverse().map(([c])=>c);if(ice)ls.push("ice");
- z.innerHTML=`<div class="zi">`+cupSVG(k,1)+`<h3>${esc(tr(it.n))}</h3>${it.p?`<span class="cp">${eur(it.p)}</span>`:""}<span class="sz">${esc(tr(VESN[v]))}</span></div>`;
+ z.innerHTML=`<div class="zi">`+cupSVG(k,1)+`<h3>${esc(tr(it.n))}</h3>${it.p?`<span class="cp">${eur(it.p)}</span>`:""}<span class="sz">${esc(tr(VESN[v]))}${opt?" · "+esc(tr(opt)):""}</span></div>`;
  z.style.paddingTop="0px";z.className="cupz on";const zi=z.firstChild,zh=zi.offsetHeight,fh=z.clientHeight,cy=br.top+br.height/2-fr.top+6;z.style.paddingTop=Math.max(8,Math.min(fh-zh-8,cy-zh/2))+"px"}
 function closeCup(z){if(matchMedia("(prefers-reduced-motion: reduce)").matches){z.className="cupz";return}z.className="cupz off";z.addEventListener("animationend",()=>{if(z.classList.contains("off"))z.className="cupz"},{once:true})}
 document.getElementById("menu").addEventListener("click",e=>{
