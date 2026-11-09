@@ -774,10 +774,10 @@ function cupPick(btn){const ul=btn.closest(".cups"),op=ul.querySelector("li.on")
 function cupDo(btn){const ul=btn.closest(".cups"),li=btn.parentNode,lis=[...ul.children],was=li.classList.contains("on"),rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
  const r0=new Map(lis.map(x=>[x,x.getBoundingClientRect()]));
  lis.forEach(x=>{x.style.gridRow=x.style.gridColumn="";if(x.classList.contains("on")){x.classList.remove("on");x.firstChild.lastChild.style.transform="";x.firstChild.firstChild.outerHTML=cupSVG(x.firstChild.dataset.k)}});
- if(!was){const n=lis.indexOf(li),r=Math.floor(n/3),c=n%3,c0=c===0?0:1,inA=(rr,cc)=>(rr===r||rr===r+1)&&(cc===c0||cc===c0+1);const dis=lis.map((x,i)=>[x,Math.floor(i/3),i%3]).filter(([x,rr,cc])=>x!==li&&inA(rr,cc)),dc=new Map(),used=new Set();dis.forEach(([x,rr,cc])=>{if(rr===r){dc.set(x,cc);used.add(cc)}});let fc=0;dis.forEach(([x])=>{if(!dc.has(x)){while(used.has(fc))fc++;dc.set(x,fc);used.add(fc)}});
+ if(!was){const n=lis.indexOf(li),r=Math.floor(n/3),c=n%3,c0=c===0?0:1,up=r>0&&r===Math.floor((lis.length-1)/3),ra=up?r-1:r,inA=(rr,cc)=>(rr===ra||rr===ra+1)&&(cc===c0||cc===c0+1);const dis=lis.map((x,i)=>[x,Math.floor(i/3),i%3]).filter(([x,rr,cc])=>x!==li&&inA(rr,cc)),dc=new Map(),used=new Set();dis.forEach(([x,rr,cc])=>{if(rr===r){dc.set(x,cc);used.add(cc)}});let fc=0;dis.forEach(([x])=>{if(!dc.has(x)){while(used.has(fc))fc++;dc.set(x,fc);used.add(fc)}});
   lis.forEach((x,i)=>{const rr=Math.floor(i/3),cc=i%3;let R,C;
-   if(x===li){x.style.gridRow=`${r+1}/span 2`;x.style.gridColumn=`${c0+1}/span 2`;return}
-   if(rr<r||(rr<=r+1&&!inA(rr,cc))){R=rr;C=cc}else if(inA(rr,cc)){R=r+2;C=dc.get(x)}else{R=rr+1;C=cc}
+   if(x===li){x.style.gridRow=`${up?ra+2:r+1}/span 2`;x.style.gridColumn=`${c0+1}/span 2`;return}
+   if(up){if(rr<ra){R=rr;C=cc}else if(inA(rr,cc)){R=ra;C=dc.get(x)}else{R=rr+1;C=cc}}else if(rr<r||(rr<=r+1&&!inA(rr,cc))){R=rr;C=cc}else if(inA(rr,cc)){R=r+2;C=dc.get(x)}else{R=rr+1;C=cc}
    x.style.gridRow=String(R+1);x.style.gridColumn=String(C+1)});
   li.classList.add("on");const k=btn.dataset.k,v=CUPS[k][0],vb=CUPVB[v],zw=Math.min(li.clientWidth*.96,250*vb[2]/vb[3],300);btn.firstChild.outerHTML=cupSVG(k,13*vb[2]/zw);btn.firstChild.style.width=zw+"px";btn.lastChild.style.transform=`translateX(${((V0=>V0[0]+V0[2]/2)(vb)-VES[v].cx)*-zw/vb[2]}px)`}
  if(rm)return;
