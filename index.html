@@ -316,7 +316,7 @@ body[data-look="poster"] .board .where{position:absolute;left:0;right:0;top:102p
 .flipb{border:0;margin:0;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;padding:0;border-radius:50%;background:var(--on);color:var(--band);font:700 13px/1 var(--f-item);cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;flex:none;align-self:flex-end}
 .flipb:focus{outline:none}.flipb.flipt{width:auto;padding:0 13px 0 9px;border-radius:999px;gap:6px;font:700 13px/1 var(--f-item)}.flipb.flipt svg{width:18px;height:18px}
 .wheel{position:relative;width:min(100%,290px);margin:10px auto 0}.wheel svg{display:block;width:100%;height:auto;overflow:visible}.wheel .wrot{transform-box:fill-box;transform-origin:center}
-.wgo{position:absolute;left:50%;top:calc(50% + 3.5%);transform:translate(-50%,-50%);width:27%;aspect-ratio:1;border:0;border-radius:50%;background:none;color:var(--band);font:800 15px/1 var(--f-item);cursor:pointer;-webkit-tap-highlight-color:transparent}.wgo:focus{outline:none}
+.wgo{position:absolute;left:50%;top:51.75%;transform:translate(-50%,-50%);width:27%;aspect-ratio:1;border:0;border-radius:50%;background:none;color:var(--band);font:800 15px/1 var(--f-item);cursor:pointer;-webkit-tap-highlight-color:transparent}.wgo:focus{outline:none}
 .wres{margin:12px 0 0;text-align:center;font:600 17px/1.3 var(--f-item);min-height:1.3em;opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s}.wres.on{opacity:1;transform:none}.wres b{font-weight:800}.flipb:focus-visible{box-shadow:0 0 0 2px var(--band),0 0 0 4px var(--on)}
 .flipb svg{width:19px;height:19px;flex:none}
 #cafes .sec-head{gap:8px}.flipw{position:relative;flex:none;align-self:flex-end;display:flex}.flipa{position:absolute;right:-2px;bottom:36px;width:52px;height:45px;color:var(--on);pointer-events:none;animation:flipa .8s ease-in-out infinite alternate}@keyframes flipa{0%{transform:translate(-7px,-5px)}45%{transform:translate(-2.5px,-3.5px)}75%{transform:translate(-.5px,-1.5px)}100%{transform:none}}@media (prefers-reduced-motion:reduce){.flipa{animation:none}}#cafes h2{letter-spacing:-.03em}
@@ -774,7 +774,7 @@ const listIco=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M5 12
 const flipArrow=`<svg class="flipa" viewBox="0 0 46 40" aria-hidden="true"><path d="M5 6C19 5 29.5 12 30 27" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/><path d="M24.5 26.5L30 34.5L35.5 26.5Z" fill="currentColor" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/></svg>`;
 const flipBtn=b=>`<button type="button" class="flipb" aria-label="${esc(tr(b?T("Ver lista","See the list","Ver lista","Liste"):T("Ver chávenas","See the cups","Ver tazas","Tassen ansehen")))}">${b?listIco:cupIco}</button>`;
 const FLIPS=new Set(["cafes","sangrias"]);window._back=window._back||{};
-const WHC={sangrias:[["#8b1e2f","#fff1dd"],["#f3d98b","#3a2216"],["#f4a6a0","#3a2216"],["#fff1c4","#3a2216"]]};
+const WHC={sangrias:[["#8b1e2f","#fff1dd"],["#fff1c4","#3a2216"],["#f4a6a0","#3a2216"],["#f7e3a3","#3a2216"]]};
 const flipTxt=`<button type="button" class="flipb flipt">${`<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="2.6" fill="currentColor"/></svg>`}<span></span></button>`;
 function wheelBack(s){const its=s.items,n=its.length,R=100,col=WHC[s.id]||[];let g="";
  its.forEach((it,i)=>{const a0=(i/n)*2*Math.PI-Math.PI/2,a1=((i+1)/n)*2*Math.PI-Math.PI/2,mid=(i+.5)*360/n,[bg,fg]=col[i%col.length]||["#fff1dd","#3a2216"];
@@ -793,7 +793,7 @@ function cupsBack(s){const its=s.items.filter(i=>i.k&&CUPS[i.k]).sort((a,b)=>"sm
  <ul class="cups">${its.map(i=>`<li><button type="button" data-k="${i.k}">${cupSVG(i.k)}<span>${esc(tr(i.n))}</span></button></li>`).join("")}</ul></div>`}
 function cupPick(btn){cupDo(btn)}
 function cupDo(btn){const ul=btn.closest(".cups"),li=btn.parentNode,lis=[...ul.children],was=li.classList.contains("on"),rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
- const r0=new Map(lis.map(x=>[x,x.getBoundingClientRect()])),prev=ul.querySelector("li.on"),ps=prev&&prev.querySelector("svg"),pr=ps&&ps.getBoundingClientRect();
+ const r0=new Map(lis.map(x=>[x,x.getBoundingClientRect()])),prev=ul.querySelector("li.on"),BD=x=>x.querySelector('svg>path:not([fill="none"])').getBoundingClientRect(),O0=new Map([prev,li].filter(Boolean).map(x=>[x,{b:BD(x),sp:x.querySelector("span").getBoundingClientRect()}]));
  lis.forEach(x=>{x.style.gridRow=x.style.gridColumn="";if(x.classList.contains("on")){x.classList.remove("on");const b=x.firstChild,k=b.dataset.k;b.lastChild.style.transform="";b.style.top="";b.style.position="";
   if(rm){b.firstChild.outerHTML=cupSVG(k,0,cupFS(ul,k));return}
   const sv=b.firstChild,vb=CUPVB[CUPS[k][0]],u=Math.min(b.clientWidth,136)/108;Object.assign(sv.style,{width:vb[2]*u+"px",maxWidth:"none",marginTop:(vb[1]-34)*u+"px",marginBottom:(110-vb[1]-vb[3])*u+"px",transform:`translateX(${(vb[0]+vb[2]/2-60)*u}px)`});
@@ -810,7 +810,10 @@ function cupDo(btn){const ul=btn.closest(".cups"),li=btn.parentNode,lis=[...ul.c
   const tp=side.length?Math.min(...side.map(x=>bt(x.firstChild))):lr.top,bot=side.length?Math.max(...side.map(x=>x.firstChild.lastChild.getBoundingClientRect().bottom)):lr.bottom;btn.style.top=((tp+bot)-(ct+cb))/2+"px"}
  window._fit&&_fit();if(rm)return;setTimeout(()=>window._fit&&_fit(),420);
  lis.forEach(x=>{const a=r0.get(x),b=x.getBoundingClientRect();if(!b.width)return;
-  if(x===prev&&x.firstChild.firstChild===ps){const nr=ps.getBoundingClientRect(),ox=nr.left+nr.width/2-b.left,oy=nr.top+nr.height/2-b.top;x.animate([{transformOrigin:`${ox}px ${oy}px`,transform:`translate(${pr.left+pr.width/2-nr.left-nr.width/2}px,${pr.top+pr.height/2-nr.top-nr.height/2}px) scale(${pr.width/nr.width})`},{transformOrigin:`${ox}px ${oy}px`,transform:"none"}],{duration:380,easing:"cubic-bezier(.4,0,.2,1)"});return}
+  if(x===prev||(x===li&&!was)){const o=O0.get(x),nb=BD(x),sp=x.querySelector("span"),ns=sp.getBoundingClientRect(),s=o.b.width/nb.width,Ox=nb.left+nb.width/2,Oy=nb.top+nb.height/2,dx=o.b.left+o.b.width/2-Ox,dy=o.b.top+o.b.height/2-Oy,E={duration:380,easing:"cubic-bezier(.4,0,.2,1)"};
+   x.animate([{transformOrigin:`${Ox-b.left}px ${Oy-b.top}px`,transform:`translate(${dx}px,${dy}px) scale(${s})`},{transformOrigin:`${Ox-b.left}px ${Oy-b.top}px`,transform:"none"}],E);
+   const Nx=ns.left+ns.width/2,Ny=ns.top+ns.height/2,ex=(o.sp.left+o.sp.width/2-dx-Ox)/s+Ox-Nx,ey=(o.sp.top+o.sp.height/2-dy-Oy)/s+Oy-Ny,k=o.sp.height/(s*ns.height);
+   sp.animate([{transform:`translate(${ex}px,${ey}px) scale(${k})`},{transform:"none"}],E);return}
   const big=x===li&&!was,sc=big?Math.min(a.height/b.height,1):1,dx=a.left+a.width/2-(b.left+b.width/2),dy=a.top+a.height/2-(b.top+b.height/2);
   if(Math.abs(dx)<1&&Math.abs(dy)<1&&sc===1)return;
   x.animate(big?[{transform:`translate(${dx}px,${dy}px) scale(${sc})`,opacity:.4},{transform:"none",opacity:1}]:[{transform:`translate(${dx}px,${dy}px)`},{transform:"none"}],{duration:380,easing:"cubic-bezier(.4,0,.2,1)"})})}
