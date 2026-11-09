@@ -784,10 +784,10 @@ function cupDo(btn){const ul=btn.closest(".cups"),li=btn.parentNode,lis=[...ul.c
    if(x===li){x.style.gridRow=`${up?ra+2:r+1}/span 2`;x.style.gridColumn=`${c0+1}/span 2`;return}
    if(up){if(rr<ra){R=rr;C=cc}else if(inA(rr,cc)){R=ra;C=dc.get(x)}else{R=rr+1;C=cc}}else if(rr<r||(rr<=r+1&&!inA(rr,cc))){R=rr;C=cc}else if(inA(rr,cc)){R=r+2;C=dc.get(x)}else{R=rr+1;C=cc}
    x.style.gridRow=String(R+1);x.style.gridColumn=String(C+1)});
-  li.classList.add("on");const k=btn.dataset.k,v=CUPS[k][0],vb=CUPVB[v],zw=Math.min(li.clientWidth*.96,150*vb[2]/vb[3],300);btn.firstChild.outerHTML=cupSVG(k,13*vb[2]/zw);btn.firstChild.style.width=zw+"px";btn.lastChild.style.transform=`translateX(${((V0=>V0[0]+V0[2]/2)(vb)-VES[v].cx)*-zw/vb[2]}px)`;
+  li.classList.add("on");const k=btn.dataset.k,v=CUPS[k][0],vb=CUPVB[v],zw=Math.min(li.clientWidth*.98,178*vb[2]/vb[3],320);btn.firstChild.outerHTML=cupSVG(k,13*vb[2]/zw);btn.firstChild.style.width=zw+"px";btn.lastChild.style.transform=`translateX(${((V0=>V0[0]+V0[2]/2)(vb)-VES[v].cx)*-zw/vb[2]}px)`;
   btn.style.position="relative";btn.style.top="0px";const lr=li.getBoundingClientRect(),bt=e=>e.querySelector('svg>path:not([fill="none"])').getBoundingClientRect().top,ct=bt(btn),cb=btn.lastChild.getBoundingClientRect().bottom;
-  let below=lis.filter(x=>x!==li&&x.getBoundingClientRect().top>=lr.bottom-1),nt=Math.min(...below.map(x=>x.getBoundingClientRect().top));below=below.filter(x=>x.getBoundingClientRect().top<nt+2);
-  const bot=below.length?Math.min(...below.map(bt)):lr.bottom,tp=lr.top-4;btn.style.top=((tp+bot)-(ct+cb))/2+"px"}
+  const side=lis.filter(x=>{if(x===li)return 0;const r=x.getBoundingClientRect();return r.top<lr.bottom-2&&r.bottom>lr.top+2});
+  const tp=side.length?Math.min(...side.map(x=>bt(x.firstChild))):lr.top,bot=side.length?Math.max(...side.map(x=>x.firstChild.lastChild.getBoundingClientRect().bottom)):lr.bottom;btn.style.top=((tp+bot)-(ct+cb))/2+"px"}
  window._fit&&_fit();if(rm)return;setTimeout(()=>window._fit&&_fit(),420);
  lis.forEach(x=>{const a=r0.get(x),b=x.getBoundingClientRect();if(!b.width)return;
   if(x===prev&&x.firstChild.firstChild===ps){const nr=ps.getBoundingClientRect(),ox=nr.left+nr.width/2-b.left,oy=nr.top+nr.height/2-b.top;x.animate([{transformOrigin:`${ox}px ${oy}px`,transform:`translate(${pr.left+pr.width/2-nr.left-nr.width/2}px,${pr.top+pr.height/2-nr.top-nr.height/2}px) scale(${pr.width/nr.width})`},{transformOrigin:`${ox}px ${oy}px`,transform:"none"}],{duration:380,easing:"cubic-bezier(.4,0,.2,1)"});return}
