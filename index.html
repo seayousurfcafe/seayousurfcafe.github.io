@@ -748,24 +748,24 @@ const CUPS={cafe:["s",[["esp",.5],["crema",.12]]],descaf:["s",[["esp",.5],["crem
  abat:["m",[["amer",.55]]],meia:["m",[["meia",.88]]],capu:["m",[["esp",.15],["milk",.45],["foam",.3]]],flat:["m",[["esp",.3],["milk",.5],["mfoam",.1]]],
  gold:["m",[["gold",.85]]],matcha:["m",[["mlatte",.88]],0,T("Também com gelo","Also iced","También con hielo","Auch mit Eis")],choc:["m",[["choc",.85]]],cha:["m",[["tea",.85]]],
  galao:["m",[["esp",.22],["milk",.66]]],latte:["g",[["milk",.6],["esp",.15],["foam",.15]]],cold:["g",[["milk",.5],["esp",.3]],1]};
-const VES={s:{body:"M34 74H76V84Q76 103 55 103Q34 103 34 84Z",inner:"M37 77H73V84Q73 100 55 100Q37 100 37 84Z",y0:77,y1:100,handle:"M75 79Q86 79 85 87Q84 94 74 93",cx:55},
- m:{body:"M22 44H88V70Q88 105 55 105Q22 105 22 70Z",inner:"M26 48H84V70Q84 101 55 101Q26 101 26 70Z",y0:48,y1:101,handle:"M87 53Q103 53 102 66Q101 80 85 81",cx:55},
- g:{body:"M37 30H81L77 104Q77 109 72 109H46Q41 109 41 104Z",inner:"M40.5 33H77.5L74 102Q74 106 70.5 106H47.5Q44 106 44 102Z",y0:33,y1:106,cx:59}};
+const VES={s:{body:"M33 70H77L71 101Q70.5 104 67 104H43Q39.5 104 39 101Z",inner:"M37.8 74H72.2L67.6 97Q67 100 64 100H46Q43 100 42.4 97Z",y0:74,y1:100,handle:"M76 77Q87 77 85 87Q83 95 71 94",cx:55},
+ m:{body:"M19.8 49H90.2L80.6 98.6Q79.8 103.4 74.2 103.4H35.8Q30.2 103.4 29.4 98.6Z",inner:"M24.6 53H85.4L76.8 96Q76 99.4 72 99.4H38Q34 99.4 33.2 96Z",y0:53,y1:99.4,handle:"M88 60Q105 60 102 76Q99 89 81 87.5",cx:55},
+ g:{body:"M38 46H80L77 105Q77 109 73 109H45Q41 109 41 105Z",inner:"M42 50H76L73.2 103Q73 105 71 105H47Q45 105 44.8 103Z",y0:50,y1:105,cx:59}};
 const VESN={s:T("Chávena de café","Espresso cup","Taza de café","Espressotasse"),m:T("Chávena grande","Large cup","Taza grande","Große Tasse"),g:T("Copo alto","Tall glass","Vaso alto","Hohes Glas")};
 let cupN=0;
 function cupSVG(k,big){const [v,L,ice]=CUPS[k],V=VES[v],id="cq"+(++cupN),H=V.y1-V.y0;let y=V.y1,r="";
  let tx="";const dark=c=>["esp","choc","cocoa","amer"].includes(c);
  L.forEach(([c,f])=>{const h=f*H;y-=h;r+=`<rect x="0" y="${(y-.3).toFixed(1)}" width="120" height="${(h+.6).toFixed(1)}" fill="${CUPL[c][0]}"/>`;
-  if(big&&f*H>=2.6){const t=tr(CUPL[c][1]).toUpperCase(),fs=Math.min(6.2,h*.62),W=(v==="g"?30:v==="s"?30:50),est=t.length*fs*.66;
+  if(big&&f*H>=2.6){const t=tr(CUPL[c][1]).toUpperCase(),fs=Math.min(6.2,h*.62),W=(v==="g"?28:v==="s"?26:50),est=t.length*fs*.66;
    tx+=`<text x="${V.cx}" y="${(y+h/2+fs*.36).toFixed(1)}" text-anchor="middle" font-size="${fs.toFixed(1)}" font-weight="800" letter-spacing=".3" fill="${dark(c)?"#fffaf0":"#3a2216"}"${est>W?` textLength="${W}" lengthAdjust="spacingAndGlyphs"`:""} style="font-family:var(--f-item)">${esc(t)}</text>`}});
  if(ice)[[47,y+4,-12],[60,y+10,9],[52,y+22,20]].forEach(([x,yy,a])=>{r+=`<rect x="${x}" y="${yy.toFixed(1)}" width="13" height="13" rx="3" fill="#fff" opacity=".55" transform="rotate(${a} ${x+6.5} ${(yy+6.5).toFixed(1)})"/>`});
  const glass=v==="g";
- return `<svg viewBox="${big?{s:"18 62 80 46",m:"10 38 100 72",g:"26 26 68 86"}[v]:"0 0 120 116"}" aria-hidden="true"><defs><clipPath id="${id}"><path d="${V.inner}"/></clipPath></defs>`+
+ return `<svg viewBox="${big?{s:"24 64 72 44",m:"12 43 98 64",g:"28 40 62 74"}[v]:"0 0 120 116"}" aria-hidden="true"><defs><clipPath id="${id}"><path d="${V.inner}"/></clipPath></defs>`+
   
-  (V.handle?`<path d="${V.handle}" fill="none" stroke="#fffaf0" stroke-width="6" stroke-linecap="round"/>`:"")+
+  (V.handle?`<path d="${V.handle}" fill="none" stroke="#fffaf0" stroke-width="4.5" stroke-linecap="round"/>`:"")+
   `<path d="${V.body}" fill="${glass?"rgba(255,255,255,.38)":"#fffaf0"}"/>`+
   `<g clip-path="url(#${id})">${glass?"":`<path d="${V.inner}" fill="#f6eddd"/>`}${r}</g>`+
-  (glass?`<path d="M43.5 37L46.5 99" stroke="#fff" stroke-opacity=".5" stroke-width="3" stroke-linecap="round"/>`:"")+`<g clip-path="url(#${id})">${tx}</g></svg>`}
+  (glass?`<path d="M46.5 55L48.5 99" stroke="#fff" stroke-opacity=".5" stroke-width="3" stroke-linecap="round"/>`:"")+`<g clip-path="url(#${id})">${tx}</g></svg>`}
 const cupIco=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h12v5a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5z" fill="currentColor"/><path d="M15.5 10.5h1.5a2.5 2.5 0 0 1 0 5h-1.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 3.5c-.8 1 .8 1.8 0 3M12 3.5c-.8 1 .8 1.8 0 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`;
 const listIco=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M5 12h14M5 17h9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>`;
 const flipBtn=b=>`<button type="button" class="flipb">${b?listIco:cupIco}${esc(tr(b?T("Ver lista","See the list","Ver lista","Liste"):T("Ver chávenas","See the cups","Ver tazas","Tassen ansehen")))}</button>`;
