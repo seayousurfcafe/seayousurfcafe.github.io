@@ -185,6 +185,7 @@ footer .wrap{padding-block:26px 28px;display:grid;gap:16px;justify-items:center;
   main{max-width:1180px;margin:0 auto;padding:24px 24px 0;display:flex;gap:24px;align-items:stretch}
   .mcol{flex:1;min-width:0;display:flex;flex-direction:column}
   body[data-look="poster"] .mcol>.sec:last-child{flex-grow:1}
+  body[data-look="poster"] #menu:has(.sec.back) .mcol>.sec:last-child{flex-grow:0}
   body[data-look="poster"] .sec{break-inside:avoid;border-radius:32px;margin:0 0 24px;overflow:hidden;animation:none;scroll-margin-top:80px;display:inline-block;width:100%;vertical-align:top}
   [data-look="poster"] .sec::before{display:none}
   .sec .wrap{max-width:none}
@@ -315,19 +316,19 @@ body[data-look="poster"] .board .where{position:absolute;left:0;right:0;top:102p
 .flipb{border:0;margin:0;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;padding:0;border-radius:50%;background:var(--on);color:var(--band);font:700 13px/1 var(--f-item);cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;flex:none;align-self:flex-end}
 .flipb:focus{outline:none}.flipb:focus-visible{box-shadow:0 0 0 2px var(--band),0 0 0 4px var(--on)}
 .flipb svg{width:19px;height:19px;flex:none}
-#cafes .sec-head{gap:8px}#cafes h2{letter-spacing:-.03em}
+#cafes .sec-head{gap:8px;position:relative}.flipa{position:absolute;right:24px;bottom:-31px;width:40px;height:31px;color:#1d120b;pointer-events:none;animation:flipa .45s ease-in-out infinite alternate}@keyframes flipa{from{transform:translateX(-5px)}to{transform:translateX(3px)}}@media (prefers-reduced-motion:reduce){.flipa{animation:none}}#cafes h2{letter-spacing:-.03em}
 .flipb{animation:cuppulse 2.8s ease-in-out 1s infinite}@keyframes cuppulse{0%,64%,100%{transform:scale(1)}72%{transform:scale(1.16)}80%{transform:scale(.96)}88%{transform:scale(1.08)}}@media (prefers-reduced-motion:reduce){.flipb{animation:none}}
 .flip{display:grid}.flip>.face{grid-area:1/1;min-width:0;position:relative}
 .sec:not(.back) .face.b,.sec.back .face.f{visibility:hidden;pointer-events:none;height:0;overflow:hidden}
 body[data-look] .sec.fo{animation:flipo .2s ease-in forwards}body[data-look] .sec.fi{animation:flipi .28s cubic-bezier(.2,.8,.3,1.1)}
 @keyframes flipo{to{transform:perspective(1600px) rotateY(90deg)}}
 @keyframes flipi{from{transform:perspective(1600px) rotateY(-90deg)}}
-.cups{list-style:none;margin:12px -6px 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:4px 2px}
+.cups{list-style:none;margin:-8px -6px 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:4px 2px}
 .cups button{border:0;background:none;color:inherit;padding:0;margin:0;width:100%;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;font:600 13px/1.15 var(--f-item);text-align:center;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
 .cups button:focus{outline:none}
 .cups svg{width:100%;max-width:136px;height:auto;display:block;transition:transform .2s}
 .cups button:active svg{transform:scale(.94)}
-.cups li.on{padding:4px 0 8px}
+.cups li.on{padding:4px 0 8px;display:flex}.cups li.on button{flex:1}
 .cups li.on button{gap:0;justify-content:center}
 .cups li.on svg{max-width:none;overflow:visible}
 .cups li.on span{font:700 17px/1.1 var(--f-item)}
@@ -731,7 +732,7 @@ document.querySelectorAll(".langs button").forEach(b=>b.setAttribute("aria-press
       return `<li class="it${it.s==="old"?" old":""}${it.p?"":" np"}"><h3 class="it-name">${it.star?nwStar(tr(it.n),flag(it.s)):esc(tr(it.n))+flag(it.s)}${a?`<span class="it-alt">${esc(a)}</span>`:""}</h3>${it.p?`<span class="it-p">${eur(it.p)}</span>`:"<span></span>"}${it.d?`<p class="it-desc">${esc(tr(it.d))}</p>`:""}${it.x?`<p class="it-x">${esc(tr(it.x)).replace(/ €/g,"\u00a0€")}</p>`:""}</li>`;
     }).join("");
     return `<section class="sec${s.id==="cafes"&&window._cupBack?" back":""}" id="${s.id}" data-b="${i%BANDS.length}" style="--band:${band};--on:${on}"><div class="wrap sec-in">
-      ${s.id==="cafes"?'<div class="flip"><div class="face f">':""}<div class="sec-head"><h2>${esc(tr(s.t))}</h2>${s.price?`<span class="sec-price">${eur(s.price)}</span>`:""}${s.id==="cafes"?flipBtn(0):""}</div>
+      ${s.id==="cafes"?'<div class="flip"><div class="face f">':""}<div class="sec-head"><h2>${esc(tr(s.t))}</h2>${s.price?`<span class="sec-price">${eur(s.price)}</span>`:""}${s.id==="cafes"?flipBtn(0)+flipArrow:""}</div>
       ${s.note?`<p class="sec-note">${esc(tr(s.note))}</p>`:""}
       <ul class="items">${items}</ul>${s.x?`<p class="sec-x">${esc(tr(s.x)).replace(/ €/g,"\u00a0€")}</p>`:""}${s.id==="cafes"?"</div>"+cupsBack(s)+"</div>":""}
     </div></section>`;
@@ -765,29 +766,34 @@ function cupSVG(k,fsU){const [v,L,ice]=CUPS[k],V=VES[v],id="cq"+(++cupN),H=V.y1-
 const CUPVB={s:[30,64,58,42],m:[12,43,98,62],g:[28,40,62,71]};
 const cupIco=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h12v5a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5z" fill="currentColor"/><path d="M15.5 10.5h1.5a2.5 2.5 0 0 1 0 5h-1.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 3.5c-.8 1 .8 1.8 0 3M12 3.5c-.8 1 .8 1.8 0 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`;
 const listIco=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M5 12h14M5 17h9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>`;
+const flipArrow=`<svg class="flipa" viewBox="0 0 34 26" aria-hidden="true"><path d="M3 23C9 23 17 20 24 9" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round"/><path d="M17 8.5L25.5 6.5L26.5 15" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 const flipBtn=b=>`<button type="button" class="flipb" aria-label="${esc(tr(b?T("Ver lista","See the list","Ver lista","Liste"):T("Ver chávenas","See the cups","Ver tazas","Tassen ansehen")))}">${b?listIco:cupIco}</button>`;
 function cupsBack(s){const its=s.items.filter(i=>i.k&&CUPS[i.k]).sort((a,b)=>"smg".indexOf(CUPS[a.k][0])-"smg".indexOf(CUPS[b.k][0]));
  return `<div class="face b"><div class="sec-head"><h2>${esc(tr(s.t))}</h2>${flipBtn(1)}</div><p class="sec-note">${esc(tr(T("Toca numa chávena para ver o que leva","Tap a cup to see what's inside","Toca una taza para ver qué lleva","Tippe auf eine Tasse")))}</p>
  <ul class="cups">${its.map(i=>`<li><button type="button" data-k="${i.k}">${cupSVG(i.k)}<span>${esc(tr(i.n))}</span></button></li>`).join("")}</ul></div>`}
-function cupPick(btn){const ul=btn.closest(".cups"),op=ul.querySelector("li.on"),t=op?op.querySelectorAll("svg text"):[];
- if(ul._busy)return;if(t.length&&!matchMedia("(prefers-reduced-motion: reduce)").matches){ul._busy=1;const an=[...t].map(x=>x.animate([{opacity:1},{opacity:0}],{duration:170,easing:"ease-out",fill:"forwards"}));an[0].finished.then(()=>{ul._busy=0;cupDo(btn)});return}cupDo(btn)}
+function cupPick(btn){cupDo(btn)}
 function cupDo(btn){const ul=btn.closest(".cups"),li=btn.parentNode,lis=[...ul.children],was=li.classList.contains("on"),rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
- const r0=new Map(lis.map(x=>[x,x.getBoundingClientRect()]));
- lis.forEach(x=>{x.style.gridRow=x.style.gridColumn="";if(x.classList.contains("on")){x.classList.remove("on");x.firstChild.lastChild.style.transform="";x.firstChild.firstChild.outerHTML=cupSVG(x.firstChild.dataset.k)}});
+ const r0=new Map(lis.map(x=>[x,x.getBoundingClientRect()])),prev=ul.querySelector("li.on"),ps=prev&&prev.querySelector("svg"),pr=ps&&ps.getBoundingClientRect();
+ lis.forEach(x=>{x.style.gridRow=x.style.gridColumn="";if(x.classList.contains("on")){x.classList.remove("on");const b=x.firstChild,k=b.dataset.k;b.lastChild.style.transform="";
+  if(rm){b.firstChild.outerHTML=cupSVG(k);return}
+  const sv=b.firstChild,vb=CUPVB[CUPS[k][0]],u=Math.min(b.clientWidth,136)/108;Object.assign(sv.style,{width:vb[2]*u+"px",maxWidth:"none",marginTop:(vb[1]-34)*u+"px",marginBottom:(110-vb[1]-vb[3])*u+"px",transform:`translateX(${(vb[0]+vb[2]/2-60)*u}px)`});
+  sv.querySelectorAll("text").forEach(t=>t.animate([{opacity:1},{opacity:0}],{duration:260,easing:"ease-out",fill:"forwards"}));
+  setTimeout(()=>{if(!x.classList.contains("on")&&b.firstChild===sv)sv.outerHTML=cupSVG(k)},400)}});
  if(!was){const n=lis.indexOf(li),r=Math.floor(n/3),c=n%3,c0=c===0?0:1,up=r>0&&r===Math.floor((lis.length-1)/3),ra=up?r-1:r,inA=(rr,cc)=>(rr===ra||rr===ra+1)&&(cc===c0||cc===c0+1);const dis=lis.map((x,i)=>[x,Math.floor(i/3),i%3]).filter(([x,rr,cc])=>x!==li&&inA(rr,cc)),dc=new Map(),used=new Set();dis.forEach(([x,rr,cc])=>{if(rr===r){dc.set(x,cc);used.add(cc)}});let fc=0;dis.forEach(([x])=>{if(!dc.has(x)){while(used.has(fc))fc++;dc.set(x,fc);used.add(fc)}});
   lis.forEach((x,i)=>{const rr=Math.floor(i/3),cc=i%3;let R,C;
    if(x===li){x.style.gridRow=`${up?ra+2:r+1}/span 2`;x.style.gridColumn=`${c0+1}/span 2`;return}
    if(up){if(rr<ra){R=rr;C=cc}else if(inA(rr,cc)){R=ra;C=dc.get(x)}else{R=rr+1;C=cc}}else if(rr<r||(rr<=r+1&&!inA(rr,cc))){R=rr;C=cc}else if(inA(rr,cc)){R=r+2;C=dc.get(x)}else{R=rr+1;C=cc}
    x.style.gridRow=String(R+1);x.style.gridColumn=String(C+1)});
   li.classList.add("on");const k=btn.dataset.k,v=CUPS[k][0],vb=CUPVB[v],zw=Math.min(li.clientWidth*.96,250*vb[2]/vb[3],300);btn.firstChild.outerHTML=cupSVG(k,13*vb[2]/zw);btn.firstChild.style.width=zw+"px";btn.lastChild.style.transform=`translateX(${((V0=>V0[0]+V0[2]/2)(vb)-VES[v].cx)*-zw/vb[2]}px)`}
- if(rm)return;
+ window._fit&&_fit();if(rm)return;setTimeout(()=>window._fit&&_fit(),420);
  lis.forEach(x=>{const a=r0.get(x),b=x.getBoundingClientRect();if(!b.width)return;
+  if(x===prev&&x.firstChild.firstChild===ps){const nr=ps.getBoundingClientRect(),ox=nr.left+nr.width/2-b.left,oy=nr.top+nr.height/2-b.top;x.animate([{transformOrigin:`${ox}px ${oy}px`,transform:`translate(${pr.left+pr.width/2-nr.left-nr.width/2}px,${pr.top+pr.height/2-nr.top-nr.height/2}px) scale(${pr.width/nr.width})`},{transformOrigin:`${ox}px ${oy}px`,transform:"none"}],{duration:380,easing:"cubic-bezier(.4,0,.2,1)"});return}
   const big=x===li&&!was,sc=big?Math.min(a.height/b.height,1):1,dx=a.left+a.width/2-(b.left+b.width/2),dy=a.top+a.height/2-(b.top+b.height/2);
   if(Math.abs(dx)<1&&Math.abs(dy)<1&&sc===1)return;
   x.animate(big?[{transform:`translate(${dx}px,${dy}px) scale(${sc})`,opacity:.4},{transform:"none",opacity:1}]:[{transform:`translate(${dx}px,${dy}px)`},{transform:"none"}],{duration:380,easing:"cubic-bezier(.4,0,.2,1)"})})}
 document.getElementById("menu").addEventListener("click",e=>{
  const fb=e.target.closest(".flipb");
- if(fb){const sec=fb.closest(".sec"),rm=matchMedia("(prefers-reduced-motion: reduce)").matches;const go=()=>{const h0=sec.offsetHeight;window._cupBack=!sec.classList.contains("back");sec.classList.toggle("back",window._cupBack);sec.querySelectorAll(".cups li.on button").forEach(cupDo);const h1=sec.offsetHeight;if(!rm&&Math.abs(h1-h0)>2){sec.style.overflow="clip";sec.animate([{height:h0+"px"},{height:h1+"px"}],{duration:320,easing:"cubic-bezier(.4,0,.2,1)"}).finished.then(()=>{sec.style.overflow="";window._fit&&_fit()})}window._fit&&_fit()};
+ if(fb){const sec=fb.closest(".sec"),rm=matchMedia("(prefers-reduced-motion: reduce)").matches;const go=()=>{const h0=sec.offsetHeight;window._cupBack=!sec.classList.contains("back");document.querySelectorAll(".mcol>.sec:last-child").forEach(l=>{if(l!==sec)l.style.flexBasis=window._cupBack?l.offsetHeight+"px":""});sec.classList.toggle("back",window._cupBack);sec.querySelectorAll(".cups li.on button").forEach(cupDo);const h1=sec.offsetHeight;if(!rm&&Math.abs(h1-h0)>2){sec.style.overflow="clip";sec.animate([{height:h0+"px"},{height:h1+"px"}],{duration:320,easing:"cubic-bezier(.4,0,.2,1)"}).finished.then(()=>{sec.style.overflow="";window._fit&&_fit()})}window._fit&&_fit()};
   if(rm){go();return}sec.classList.remove("fi");sec.classList.add("fo");const end=ev=>{if(ev.target!==sec||ev.animationName!=="flipo")return;sec.removeEventListener("animationend",end);sec.classList.remove("fo");go();void sec.offsetWidth;sec.classList.add("fi")};sec.addEventListener("animationend",end);return}
  const cb=e.target.closest(".cups button");if(cb)cupPick(cb)});
 const DESK=matchMedia("(min-width:900px)");
