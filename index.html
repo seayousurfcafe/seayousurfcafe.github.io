@@ -324,19 +324,14 @@ body[data-look] .sec.fo{animation:flipo .2s ease-in forwards}body[data-look] .se
 .cups button:focus{outline:none}
 .cups svg{width:100%;max-width:120px;height:auto;display:block;transition:transform .2s}
 .cups button:active svg{transform:scale(.94)}
-.cupz{position:absolute;inset:-6px;display:none;flex-direction:column;align-items:center;justify-content:flex-start;background:var(--band);color:var(--on);cursor:pointer;border-radius:12px;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;z-index:2;padding:8px}
-.cupz.on{display:flex;animation:cupin .32s cubic-bezier(.2,.8,.3,1.15)}
-.cupz.off{display:flex;animation:cupout .2s ease-in forwards}
-@keyframes cupin{from{transform:scale(.25);opacity:0}}
-@keyframes cupout{to{transform:scale(.25);opacity:0}}
-.cupz .zi{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%}.cupz svg{width:min(72%,280px);height:auto;overflow:visible}
-.cupz h3{margin:0;font:700 22px/1.1 var(--f-item);text-align:center}
-.cupz .cp{font:700 16px/1 var(--f-item);opacity:.85}
-.cupz ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:5px;font:600 15px/1.2 var(--f-item)}
-.cupz li{display:flex;align-items:center;gap:8px}
-.cupz li i{width:14px;height:14px;border-radius:50%;flex:none}
-.cupz .sz{font-size:13px;opacity:.8;margin-top:2px}
-@media (prefers-reduced-motion:reduce){body[data-look] .sec.fo,body[data-look] .sec.fi,.cupz.on{animation:none}.cupz.off{animation:none;display:none}}
+.cups.z{grid-template-columns:repeat(4,1fr);grid-auto-flow:row dense;gap:4px 2px}
+.cups.z button{font-size:11.5px}
+.cups li.on{grid-column:span 2;grid-row:span 2}
+.cups li.on button{gap:6px;justify-content:center;height:100%}
+.cups li.on svg{max-width:none;overflow:visible}
+.cups li.on span{font:700 17px/1.1 var(--f-item)}
+.cups li{will-change:transform}
+@media (prefers-reduced-motion:reduce){body[data-look] .sec.fo,body[data-look] .sec.fi{animation:none}}
 </style>
 </head>
 <body>
@@ -771,19 +766,21 @@ const listIco=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M5 12
 const flipBtn=b=>`<button type="button" class="flipb">${b?listIco:cupIco}${esc(tr(b?T("Ver lista","See the list","Ver lista","Liste"):T("Ver chávenas","See the cups","Ver tazas","Tassen ansehen")))}</button>`;
 function cupsBack(s){const its=s.items.filter(i=>i.k&&CUPS[i.k]).sort((a,b)=>"smg".indexOf(CUPS[a.k][0])-"smg".indexOf(CUPS[b.k][0]));
  return `<div class="face b"><div class="sec-head"><h2>${esc(tr(s.t))}</h2>${flipBtn(1)}</div><p class="sec-note">${esc(tr(T("Toca numa chávena para ver o que leva","Tap a cup to see what's inside","Toca una taza para ver qué lleva","Tippe auf eine Tasse")))}</p>
- <ul class="cups">${its.map(i=>`<li><button type="button" data-k="${i.k}">${cupSVG(i.k)}<span>${esc(tr(i.n))}</span></button></li>`).join("")}</ul><div class="cupz" role="dialog" aria-modal="false"></div></div>`}
-function openCup(btn){const f=btn.closest(".face"),z=f.querySelector(".cupz"),k=btn.dataset.k,s=MENUS.drinks.find(x=>x.id==="cafes"),it=s.items.find(i=>i.k===k),[v,L,ice,opt]=CUPS[k];
- const fr=f.getBoundingClientRect(),br=btn.getBoundingClientRect();z.style.transformOrigin=`${br.left+br.width/2-fr.left}px ${br.top+br.height/2-fr.top}px`;
- const ls=[...L].reverse().map(([c])=>c);if(ice)ls.push("ice");
- const zw=Math.min((f.clientWidth-4)*.72,280),fsU=11*CUPVB[v][2]/zw;z.innerHTML=`<div class="zi">`+cupSVG(k,fsU)+`<h3>${esc(tr(it.n))}</h3>${it.p?`<span class="cp">${eur(it.p)}</span>`:""}<span class="sz">${esc(tr(VESN[v]))}${opt?" · "+esc(tr(opt)):""}</span></div>`;
- z.style.paddingTop="0px";z.className="cupz on";const zi=z.firstChild,zh=zi.offsetHeight,fh=z.clientHeight,cy=br.top+br.height/2-fr.top+6;z.style.paddingTop=Math.max(8,Math.min(fh-zh-8,cy-zh/2))+"px"}
-function closeCup(z){if(matchMedia("(prefers-reduced-motion: reduce)").matches){z.className="cupz";return}z.className="cupz off";z.addEventListener("animationend",()=>{if(z.classList.contains("off"))z.className="cupz"},{once:true})}
+ <ul class="cups">${its.map(i=>`<li><button type="button" data-k="${i.k}">${cupSVG(i.k)}<span>${esc(tr(i.n))}</span></button></li>`).join("")}</ul></div>`}
+function cupPick(btn){const ul=btn.closest(".cups"),li=btn.parentNode,lis=[...ul.children],was=li.classList.contains("on"),rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
+ const r0=new Map(lis.map(x=>[x,x.getBoundingClientRect()]));
+ lis.forEach(x=>{if(x.classList.contains("on")){x.classList.remove("on");x.firstChild.firstChild.outerHTML=cupSVG(x.firstChild.dataset.k)}});
+ ul.classList.toggle("z",!was);
+ if(!was){li.classList.add("on");const k=btn.dataset.k,v=CUPS[k][0],zw=Math.min(li.clientWidth*.94,300);btn.firstChild.outerHTML=cupSVG(k,11*CUPVB[v][2]/zw);btn.firstChild.style.width=zw+"px"}
+ if(rm)return;
+ lis.forEach(x=>{const a=r0.get(x),b=x.getBoundingClientRect();if(!b.width)return;const dx=a.left-b.left,dy=a.top-b.top,sx=a.width/b.width,sy=a.height/b.height;
+  if(Math.abs(dx)<1&&Math.abs(dy)<1&&Math.abs(sx-1)<.01&&Math.abs(sy-1)<.01)return;
+  x.animate([{transformOrigin:"0 0",transform:`translate(${dx}px,${dy}px) scale(${sx},${sy})`},{transformOrigin:"0 0",transform:"none"}],{duration:x===li?340:280,easing:"cubic-bezier(.2,.8,.3,1.08)"})})}
 document.getElementById("menu").addEventListener("click",e=>{
  const fb=e.target.closest(".flipb");
- if(fb){const sec=fb.closest(".sec"),rm=matchMedia("(prefers-reduced-motion: reduce)").matches;const go=()=>{window._cupBack=!sec.classList.contains("back");sec.classList.toggle("back",window._cupBack);const z=sec.querySelector(".cupz");if(z)z.className="cupz"};
+ if(fb){const sec=fb.closest(".sec"),rm=matchMedia("(prefers-reduced-motion: reduce)").matches;const go=()=>{window._cupBack=!sec.classList.contains("back");sec.classList.toggle("back",window._cupBack);sec.querySelectorAll(".cups li.on button").forEach(cupPick)};
   if(rm){go();return}sec.classList.remove("fi");sec.classList.add("fo");const end=ev=>{if(ev.target!==sec||ev.animationName!=="flipo")return;sec.removeEventListener("animationend",end);sec.classList.remove("fo");go();void sec.offsetWidth;sec.classList.add("fi")};sec.addEventListener("animationend",end);return}
- const z=e.target.closest(".cupz");if(z){closeCup(z);return}
- const cb=e.target.closest(".cups button");if(cb)openCup(cb)});
+ const cb=e.target.closest(".cups button");if(cb)cupPick(cb)});
 const DESK=matchMedia("(min-width:900px)");
 function nwStar(n,fl){const i=n.lastIndexOf(" ");return esc(n.slice(0,i+1))+`<span style="white-space:nowrap">${esc(n.slice(i+1))}${fl}<span class="star">★ ${esc(tr(DESK.matches?UI.starL:UI.star))}</span></span>`}
 function layout(){
